@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getAuthToken } from '../utils/authed';
 import faker from 'faker';
 import BreadBanner from '../components/BreadBanner';
 import { BarChart } from '../components/chart/BarChart';
@@ -37,6 +38,12 @@ export default function Finance() {
         },
       ],
     };
+  useEffect(() => {
+      const items = getAuthToken();
+      if (!items) {
+      window.location.href = '/login';
+      }
+  }, []);
   return (
     <>
       <BreadBanner title="Modul Finance" />

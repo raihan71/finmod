@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getAuthToken } from '../utils/authed';
 import BreadBanner from '../components/BreadBanner';
 import Tab from '../components/Tab';
 import Table from '../components/Table';
@@ -8,6 +9,12 @@ export default function Marketing() {
     {label: 'Notifikasi', action: () => {}},
     {label: 'Draft', action: () => {}}
   ];
+useEffect(() => {
+    const items = getAuthToken();
+    if (!items) {
+    window.location.href = '/login';
+    }
+}, []);
   return (
     <>
         <BreadBanner title="Modul Marketing" />

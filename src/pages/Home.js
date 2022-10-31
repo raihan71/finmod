@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import faker from 'faker';
+import { getAuthToken } from '../utils/authed';
 import { BarChart } from '../components/chart/BarChart';
 import BreadBanner from '../components/BreadBanner';
 import img from '../config/images';
@@ -45,10 +46,12 @@ export default function Contact() {
         },
       ],
     };
-    const token = localStorage.getItem("token");
-    if (!token) {
-        window.location.href = '/login'
-    }
+    useEffect(() => {
+        const items = getAuthToken();
+        if (!items) {
+        window.location.href = '/login';
+        }
+    }, []);
   return (
    <>
     <BreadBanner title="Beranda" />

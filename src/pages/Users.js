@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getAuthToken } from '../utils/authed';
 import BreadBanner from '../components/BreadBanner';
 export default function Users() {
+useEffect(() => {
+    const items = getAuthToken();
+    if (!items) {
+    window.location.href = '/login';
+    }
+}, []);
   return (
     <>
         <BreadBanner title="Manajemen User" />

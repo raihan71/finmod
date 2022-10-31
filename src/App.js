@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import { Home, Marketing, Finance, Users, Content, Investor, Login } from './pages';
-import { setAuthToken } from './utils/authed';
+import { setAuthToken, getAuthToken } from './utils/authed';
 function App() {
-  const token = localStorage.getItem("token");
+  const token = getAuthToken();
    if (token) {
-       setAuthToken(token);
+      setAuthToken(token);
    }
   return (
     <Router>

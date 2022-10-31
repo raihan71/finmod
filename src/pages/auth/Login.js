@@ -1,32 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import { getAuthToken } from '../../utils/authed';
+import Alert from '../../components/Alert';
 import img from '../../config/images'
 import { login } from './action/login'
-
 function Login() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
+  const [error,setError] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const resp = await login({email, password});
-      if(resp.status === 'success') {
-        window.location.href = '/';
-      }
-      console.log(resp);
+      await login({email, password}).then((resp) => {
+        if(resp?.message === 'Success!') {
+          window.location.href = '/';
+        }if (resp.response?.status === 400){
+          setError(resp.response?.data?.message);
+        }
+        console.log(resp);
+      }).catch((err) => {
+        console.log(err);
+      });
     } catch (error) {
-      localStorage.setItem("token", "karenaaa_apinya_gabisa_jdi_blm_jadi");
-      // setTimeout(() => {
-      //   window.location.href = '/';
-      // }, 3000);
+      console.log(error);
       return error;
     }
   };
+  useEffect(() => {
+    const items = getAuthToken();
+    if (items) {
+    window.location.href = '/';
+    }
+}, []);
   return (
     <section className="h-full gradient-form bg-gray-200 md:h-screen font-md">
       <div className="container py-12 px-6 h-full">
         <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
           <div className="xl:w-10/12">
+            {error ? <Alert action={() => setError('')} type="yellow" message={error} /> : ''}
             <div className="block bg-white shadow-lg rounded-lg">
               <div className="lg:flex lg:flex-wrap g-0">
                 <div className="lg:w-6/12 px-4 md:px-0">
@@ -44,7 +55,6 @@ function Login() {
                         <input
                           type="text"
                           className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                          id="exampleFormControlInput1"
                           placeholder="Username"
                           onChange={(e) => setEmail(e.target.value)}
                         />
@@ -53,7 +63,6 @@ function Login() {
                         <input
                           type="password"
                           className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                          id="exampleFormControlInput1"
                           placeholder="Password"
                           onChange={(e) => setPassword(e.target.value)}
                         />
@@ -72,9 +81,9 @@ function Login() {
                         <p className="mb-0 mr-2">Don't have an account?</p>
                         <button
                           type="button"
-                          className="inline-block px-6 py-2 border-2 border-red-600 text-red-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+                          className="inline-block px-6 py-2 border-2 border-yellow-600 text-yellow-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
                         >
-                          Danger
+                          Join
                         </button>
                       </div>
                   </div>

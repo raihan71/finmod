@@ -17,7 +17,6 @@ function Login() {
         }if (resp.response?.status === 400){
           setError(resp.response?.data?.message);
         }
-        console.log(resp);
       }).catch((err) => {
         console.log(err);
       });
@@ -37,7 +36,7 @@ function Login() {
       <div className="container py-12 px-6 h-full">
         <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
           <div className="xl:w-10/12">
-            {error ? <Alert action={() => setError('')} type="yellow" message={error} /> : ''}
+            {error ? <Alert action={() => setError('')} bg="bg-yellow-100" color="text-yellow-700" message={error} /> : ''}
             <div className="block bg-white shadow-lg rounded-lg">
               <div className="lg:flex lg:flex-wrap g-0">
                 <div className="lg:w-6/12 px-4 md:px-0">

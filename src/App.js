@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import { Home, Marketing, Finance, Users, Content, Investor, Login } from './pages';
+import { setAuthToken } from './utils/authed';
 function App() {
+  const token = localStorage.getItem("token");
+   if (token) {
+       setAuthToken(token);
+   }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="flex">
+        {token && <Sidebar />}
+        <div className="flex flex-col w-full font-body bg-zinc-50">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} exact />
+              <Route path="/marketing" element={<Marketing />} exact />
+              <Route path="/investor" element={<Investor />} exact />
+              <Route path="/content" element={<Content />} exact />
+              <Route path="/users" element={<Users />} exact />
+              <Route path="/finance" element={<Finance />} exact />
+              <Route
+                path="*"
+                element={
+                  <div>
+                    <h2>404 Page not found </h2>
+                  </div>
+                }
+              />
+            </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
